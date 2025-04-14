@@ -1,5 +1,7 @@
 package food_ordering_system.restaurant_service.exceptions;
 
+import food_ordering_system.restaurant_service.dto.ErrorResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,17 +23,20 @@ class GlobalExceptionHandler {
 
 
     @ExceptionHandler(Exception.class)
-    public String handleGeneralException(Exception ex) {
-        return "exception occurred..!, trying to figure out what went wrong \n" + ex.getMessage();
+    public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex) {
+        ErrorResponse error = new ErrorResponse("error",  ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 
     @ExceptionHandler(RestaurantNotFoundException.class)
-    public String handleRestaurantNotFound(RestaurantNotFoundException ex) {
-        return ex.getMessage(); // or return a proper error response DTO
+    public ResponseEntity<ErrorResponse> handleRestaurantNotFound(RestaurantNotFoundException ex) {
+        ErrorResponse error = new ErrorResponse("error",  ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
     @ExceptionHandler(FoodNotFoundException.class)
-    public String handleFoodNotFound(FoodNotFoundException ex) {
-        return ex.getMessage(); // or return a proper error response DTO
+    public ResponseEntity<ErrorResponse> handleFoodNotFound(FoodNotFoundException ex) {
+        ErrorResponse error = new ErrorResponse("error",  ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 
 }

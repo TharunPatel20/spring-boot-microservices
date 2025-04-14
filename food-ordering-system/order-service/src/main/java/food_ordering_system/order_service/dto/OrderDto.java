@@ -1,4 +1,6 @@
 package food_ordering_system.order_service.dto;
 
-public record OrderDto() {
+import java.util.List;
+
+public record OrderDto(Long resId, List<Long> FoodIds) {
 }
