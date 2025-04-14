@@ -1,0 +1,40 @@
+debug: true
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: order-service-routes
+            uri: lb://ORDER-SERVICE
+            predicates:
+              - Path=/api/orders, /api/orders/**
+              - Method=POST,GET ,OPTIONS
+            filters:
+              - RewritePath=/api/orders/(?<segment>.*), /orders/${segment}
+              - RewritePath=/api/orders, /orders
+
+          - id: restaurant-service-route
+            uri: lb://RESTAURANT-SERVICE
+            predicates:
+              - Path=/api/restaurants, /api/restaurants/**
+              - Method=GET,POST,OPTIONS
+            filters:
+              - RewritePath=/api/restaurants/(?<segment>.*), /restaurants/${segment}
+              - RewritePath=/api/restaurants, /restaurants
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_SERVER:localhost}:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
+  instance:
+    prefer-ip-address: false

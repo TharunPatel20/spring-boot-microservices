@@ -45,11 +45,12 @@ public class OrderController {
 
     @Autowired
     RestaurantClient client;
-    @GetMapping("/restaurants/{id}")
+    @GetMapping("/restaurants/{resId}")
     public ResponseEntity<ResponseDto> getRestaurantMenu(@PathVariable Long resId){
         return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK,client.getRestaurantById(resId)));
     }
 
+//    /orders/restaurants
     @GetMapping("/restaurants")
     public ResponseEntity<ResponseDto> getRestaurantMenu(){
         return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK,client.getAllRestaurants()));
